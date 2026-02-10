@@ -34,7 +34,3 @@ build/
 
 ### Mac OS ###
 .DS_Store
-
-### Secrets ###
-application.properties
-application.yml

@@ -40,12 +40,11 @@ Edit `src/main/resources/application.properties`:
 
 ```properties
 spring.mail.username=your-email@gmail.com
-spring.mail.password=your-app-password
+spring.mail.password=${MAIL_PASSWORD}
 ```
 
-Replace:
-- `your-email@gmail.com` with your Gmail address
-- `your-app-password` with the 16-character app password you generated
+- `spring.mail.username`: Set this to your Gmail address.
+- `spring.mail.password`: This is configured to use the `MAIL_PASSWORD` environment variable.
 
 ## Running the Application
 
@@ -54,10 +53,11 @@ Replace:
    cd email-sender-app
    ```
 
-2. Run with Maven:
+2. Run with Maven, setting the environment variable:
    ```bash
-   mvn spring-boot:run
+   MAIL_PASSWORD=your-app-password mvn spring-boot:run
    ```
+   Replace `your-app-password` with your actual 16-character Gmail App Password.
 
 3. Open your browser and go to:
    ```
