@@ -13,8 +13,8 @@ email-sender-app/
 │       │   └── EmailController.java
 │       └── resources/
 │           ├── application.properties
-│           └── templates/
-│               └── email-form.html
+│           └── static/
+│               └── index.html
 └── pom.xml
 ```
 
