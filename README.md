@@ -1,8 +1,8 @@
-# Spring Boot Email Sender Application
+# Application d'Envoi d'E-mails avec Spring Boot (version SendGrid)
 
-A simple Spring Boot application that demonstrates sending emails using Gmail SMTP server.
+Une application Spring Boot simple qui démontre l'envoi d'e-mails en utilisant SendGrid.
 
-## Project Structure
+## Structure du Projet
 
 ```
 email-sender-app/
@@ -18,75 +18,90 @@ email-sender-app/
 └── pom.xml
 ```
 
-## Prerequisites
+## Prérequis
 
-- Java 17 or higher
+- Java 17 ou supérieur
 - Maven
-- Gmail account with 2-factor authentication enabled
+- Un compte SendGrid et une clé API
 
-## Gmail Setup
+## Configuration de SendGrid
 
-To use Gmail SMTP, you need to generate an App Password:
+Pour utiliser SendGrid, vous devez générer une clé API :
 
-1. Go to your Google Account: https://myaccount.google.com/
-2. Enable 2-factor authentication if not already enabled
-3. Go to App Passwords: https://myaccount.google.com/apppasswords
-4. Generate a new app password for "Mail"
-5. Copy the generated 16-character password
+1. Inscrivez-vous pour un compte SendGrid : https://sendgrid.com/
+2. Connectez-vous et allez dans **Settings** > **API Keys**.
+3. Cliquez sur **Create API Key**.
+4. Donnez-lui un nom et sélectionnez **Full Access** ou **Restricted Access** (suffisant pour envoyer des mails).
+5. Copiez la clé API générée immédiatement (elle ne sera plus affichée).
+
+> [!NOTE]
+> Il est également recommandé de vérifier une "Sender Identity" (Identité d'Expéditeur) dans SendGrid (Settings > Sender Authentication) pour éviter que vos e-mails ne soient marqués comme spam.
 
 ## Configuration
 
-Edit `src/main/resources/application.properties`:
+Modifiez `src/main/resources/application.properties` :
 
 ```properties
-spring.mail.username=your-email@gmail.com
-spring.mail.password=${MAIL_PASSWORD}
+sendgrid.api-key=${SENDGRID_API_KEY}
+sendgrid.from-email=votre-expediteur-verifie@example.com
 ```
 
-- `spring.mail.username`: Set this to your Gmail address.
-- `spring.mail.password`: This is configured to use the `MAIL_PASSWORD` environment variable.
+- `sendgrid.api-key` : Configuré pour utiliser la variable d'environnement `SENDGRID_API_KEY`.
+- `sendgrid.from-email` : L'adresse e-mail utilisée comme expéditeur. Elle doit être validée dans votre compte SendGrid.
 
-## Running the Application
+## Lancement de l'Application
 
-1. Navigate to the project directory:
+1. Accédez au répertoire du projet :
    ```bash
    cd email-sender-app
    ```
 
-2. Run with Maven, setting the environment variable:
-   ```bash
-   MAIL_PASSWORD=your-app-password mvn spring-boot:run
-   ```
-   Replace `your-app-password` with your actual 16-character Gmail App Password.
+2. Lancez l'application :
 
-3. Open your browser and go to:
+### Linux / macOS (Bash/Zsh)
+```bash
+SENDGRID_API_KEY=votre-cle-api-sendgrid mvn spring-boot:run
+```
+
+### Windows 11 (PowerShell)
+```powershell
+$env:SENDGRID_API_KEY="votre-cle-api-sendgrid"; mvn spring-boot:run
+```
+
+### Windows (Invite de commandes)
+```cmd
+set SENDGRID_API_KEY=votre-cle-api-sendgrid && mvn spring-boot:run
+```
+
+Remplacez `votre-cle-api-sendgrid` par votre véritable clé API SendGrid.
+
+3. Ouvrez votre navigateur et allez sur :
    ```
    http://localhost:8080
    ```
 
-## Usage
+## Utilisation
 
-1. Fill in the form with:
-   - **To Email**: Recipient's email address
-   - **Subject**: Email subject line
-   - **Message**: Email body content
+1. Remplissez le formulaire avec :
+   - **To Email** : Adresse e-mail du destinataire
+   - **Subject** : Objet de l'e-mail
+   - **Message** : Corps du message
 
-2. Click "Send Email"
+2. Cliquez sur "Send Email" (Envoyer l'e-mail)
 
-3. You'll see a success or error message after attempting to send
+3. Un message de succès ou d'erreur s'affichera après la tentative d'envoi.
 
-## Features
+## Caractéristiques
 
-- Simple, clean UI with gradient background
-- Form validation
-- Success/error message display
-- Uses Spring Boot Mail component
-- Configured for Gmail SMTP server
+- Interface utilisateur simple et propre avec un dégradé en arrière-plan
+- Validation du formulaire
+- Affichage des messages de succès/erreur
+- Utilise le SDK Java de SendGrid
+- Configuré via des variables d'environnement pour plus de sécurité
 
-## Technologies Used
+## Technologies Utilisées
 
 - Spring Boot 3.2.0
-- Spring Boot Starter Mail
+- SendGrid Java SDK 4.10.2
 - Spring Boot Starter Web
-- Thymeleaf (for HTML templates)
 - Maven
