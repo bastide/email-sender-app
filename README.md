@@ -28,26 +28,26 @@ email-sender-app/
 
 Pour utiliser SendGrid, vous devez générer une clé API :
 
-1. Inscrivez-vous pour un compte SendGrid : https://sendgrid.com/
+1. Inscrivez-vous pour un compte SendGrid : https://sendgrid.com/ . Inutile de créer un domaine, vous pouvez utiliser votre email de l'univ-jfc.fr comme expéditeur.
 2. Connectez-vous et allez dans **Settings** > **API Keys**.
 3. Cliquez sur **Create API Key**.
 4. Donnez-lui un nom et sélectionnez **Full Access** ou **Restricted Access** (suffisant pour envoyer des mails).
 5. Copiez la clé API générée immédiatement (elle ne sera plus affichée).
 
 > [!NOTE]
-> Il est également recommandé de vérifier une "Sender Identity" (Identité d'Expéditeur) dans SendGrid (Settings > Sender Authentication) pour éviter que vos e-mails ne soient marqués comme spam.
+> Il est également nécessaire de vérifier une "Sender Identity" (Identité d'Expéditeur) dans SendGrid (Settings > Sender Authentication) pour éviter que vos e-mails ne soient marqués comme spam. Utilisez votre email de l'univ-jfc.fr comme expéditeur.
 
 ## Configuration
 
-Modifiez `src/main/resources/application.properties` :
+Examinez la configuration dans le fichier `src/main/resources/application.properties` :
 
 ```properties
 sendgrid.api-key=${SENDGRID_API_KEY}
-sendgrid.from-email=votre-expediteur-verifie@example.com
+sendgrid.from-email=${SENDGRID_FROM_EMAIL}
 ```
 
 - `sendgrid.api-key` : Configuré pour utiliser la variable d'environnement `SENDGRID_API_KEY`.
-- `sendgrid.from-email` : L'adresse e-mail utilisée comme expéditeur. Elle doit être validée dans votre compte SendGrid.
+- `sendgrid.from-email` : Configuré pour utiliser la variable d'environnement `SENDGRID_FROM_EMAIL`. L'adresse e-mail doit être validée dans votre compte SendGrid.
 
 ## Lancement de l'Application
 
@@ -60,17 +60,17 @@ sendgrid.from-email=votre-expediteur-verifie@example.com
 
 ### Linux / macOS (Bash/Zsh)
 ```bash
-SENDGRID_API_KEY=votre-cle-api-sendgrid mvn spring-boot:run
+SENDGRID_API_KEY=votre-cle-api-sendgrid SENDGRID_FROM_EMAIL=votre-email@exemple.com mvn spring-boot:run
 ```
 
 ### Windows 11 (PowerShell)
 ```powershell
-$env:SENDGRID_API_KEY="votre-cle-api-sendgrid"; mvn spring-boot:run
+$env:SENDGRID_API_KEY="votre-cle-api-sendgrid"; $env:SENDGRID_FROM_EMAIL="votre-email@exemple.com"; mvn spring-boot:run
 ```
 
 ### Windows (Invite de commandes)
 ```cmd
-set SENDGRID_API_KEY=votre-cle-api-sendgrid && mvn spring-boot:run
+set SENDGRID_API_KEY=votre-cle-api-sendgrid && set SENDGRID_FROM_EMAIL=votre-email@exemple.com && mvn spring-boot:run
 ```
 
 Remplacez `votre-cle-api-sendgrid` par votre véritable clé API SendGrid.
@@ -98,6 +98,18 @@ Remplacez `votre-cle-api-sendgrid` par votre véritable clé API SendGrid.
 - Affichage des messages de succès/erreur
 - Utilise le SDK Java de SendGrid
 - Configuré via des variables d'environnement pour plus de sécurité
+
+## Déploiement sur Render
+
+Cette application est prête à être déployée sur [Render](https://render.com) en utilisant Docker.
+
+1. Créez un nouveau **Web Service** sur Render.
+2. Connectez votre dépôt GitHub.
+3. Choisissez **Docker** comme environnement d'exécution (Runtime).
+4. Configurez les variables d'environnement suivantes dans Render (Settings > Environment) :
+   - `SENDGRID_API_KEY` : Votre clé API SendGrid.
+   - `SENDGRID_FROM_EMAIL` : Votre adresse e-mail d'expéditeur vérifiée.
+5. Render détectera automatiquement le `Dockerfile` et lancera la construction et le déploiement.
 
 ## Technologies Utilisées
 
